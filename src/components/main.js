@@ -4,7 +4,7 @@ import AddToDo from './addToDo';
 import { Footer } from './footer';
 
 export const Main = ({match}) => (<div>
-    <VisibleToDoList filter={match.params.filter || 'all'} />
+    <VisibleToDoList />
     <AddToDo />
     <Footer />
 </div>);

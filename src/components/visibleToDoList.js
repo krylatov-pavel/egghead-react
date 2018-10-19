@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { toggleToDo } from '../redux/actionCreators';
+import { withRouter } from 'react-router-dom';
 
 const getVisibleToDos = (todos, filter) => {
     switch (filter) {
@@ -15,26 +16,25 @@ const getVisibleToDos = (todos, filter) => {
     }
 }
 
-const mapStateToProps = (state) => ({
-    todos: state
+const mapStateToProps = (state, ownProps) => ({
+    todos: state,
+    filter: ownProps.match.params.filter || 'all'
 });
 
 const mapDispatchToProps = (dispatch) => ({
     toggleToDo: (id) => dispatch(toggleToDo(id))
 });
 
-class VisibleToDOList extends Component {
-    render() {
-        const todos = getVisibleToDos(this.props.todos, this.props.filter)
-            .map(todo => <li onClick={() => this.props.toggleToDo(todo.id)}
-                key={todo.id}
-                style={{
-                    textDecoration: todo.active ? 'none' : 'line-through'
-                }}
-            >{todo.text}</li>);
+const VisibleToDOList = ({todos, filter, toggleToDo}) => {
+    const visibleTodos = getVisibleToDos(todos, filter)
+        .map(todo => <li onClick={() => toggleToDo(todo.id)}
+            key={todo.id}
+            style={{
+                textDecoration: todo.active ? 'none' : 'line-through'
+            }}
+        >{todo.text}</li>);
 
-        return (<ul>{todos}</ul>);
-    }
+    return (<ul>{visibleTodos}</ul>);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(VisibleToDOList);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(VisibleToDOList));
