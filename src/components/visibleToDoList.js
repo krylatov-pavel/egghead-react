@@ -21,9 +21,9 @@ const mapStateToProps = (state, ownProps) => ({
     filter: ownProps.match.params.filter || 'all'
 });
 
-const mapDispatchToProps = (dispatch) => ({
-    toggleToDo: (id) => dispatch(toggleToDo(id))
-});
+const mapDispatchToProps = {
+    toggleToDo: toggleToDo
+};
 
 const VisibleToDOList = ({todos, filter, toggleToDo}) => {
     const visibleTodos = getVisibleToDos(todos, filter)
