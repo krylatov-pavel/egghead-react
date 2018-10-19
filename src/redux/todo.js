@@ -12,7 +12,7 @@ export default (state = {}, action) => {
             if (state.id === action.id) {
                 return {
                     ...state,
-                    active: !action.state
+                    active: !state.active
                 }
             } else {
                 return state;

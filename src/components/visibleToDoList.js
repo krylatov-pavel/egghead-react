@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { toggleToDo } from '../redux/actionCreators';
 
 const getVisibleToDos = (todos, filter) => {
     switch (filter) {
@@ -18,13 +19,22 @@ const mapStateToProps = (state) => ({
     todos: state
 });
 
+const mapDispatchToProps = (dispatch) => ({
+    toggleToDo: (id) => dispatch(toggleToDo(id))
+});
+
 class VisibleToDOList extends Component {
     render() {
         const todos = getVisibleToDos(this.props.todos, this.props.filter)
-            .map(todo => <li key={todo.id}>{todo.text}</li>);
+            .map(todo => <li onClick={() => this.props.toggleToDo(todo.id)}
+                key={todo.id}
+                style={{
+                    textDecoration: todo.active ? 'none' : 'line-through'
+                }}
+            >{todo.text}</li>);
 
         return (<ul>{todos}</ul>);
     }
 }
 
-export default connect(mapStateToProps)(VisibleToDOList);
+export default connect(mapStateToProps, mapDispatchToProps)(VisibleToDOList);

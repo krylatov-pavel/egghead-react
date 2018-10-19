@@ -6,7 +6,7 @@ export const todos = (state = [], action) => {
         case ActionTypes.ADD_TODO:
             return state.concat(todo(undefined, action));
         case ActionTypes.TOGGLE_TODO:
-            return state.map(e => todo(e));
+            return state.map(e => todo(e, action));
         default:
             return state;
     }
