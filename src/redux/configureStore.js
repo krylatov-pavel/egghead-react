@@ -19,6 +19,19 @@ const addLoggingToDispatch = (store) => {
     } else {
         return rawDispatch;
     }
+};
+
+const addPromiseSupportToDispatch = (store) => {
+    const rawDispatch = store.dispatch;
+
+    return (action) => {
+        if (typeof action.then === 'function') {
+            return action.then(rawDispatch);
+        }
+        else {
+            return rawDispatch(action);
+        }
+    }
 }
 
 export default () => {
@@ -27,6 +40,7 @@ export default () => {
     }));
 
     store.dispatch = addLoggingToDispatch(store);
+    store.dispatch = addPromiseSupportToDispatch(store);
 
     return store;
 };
