@@ -18,8 +18,8 @@ export const fetchToDos = (filter) => {
     return api.fetchToDos(filter).then(todos => receiveToDos(filter, todos));
 }
 
-const receiveToDos = (filter, todos) => ({
+const receiveToDos = (filter, response) => ({
     type: ActionTypes.RECEIVE_TODOS,
-    todos,
+    response,
     filter
 });
