@@ -1,20 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { toggleToDo } from '../redux/actionCreators';
 import { withRouter } from 'react-router-dom';
-
-const getVisibleToDos = (todos, filter) => {
-    switch (filter) {
-        case 'all':
-            return todos;
-        case 'active':
-            return todos.filter(todo => todo.active);
-        case 'completed':
-            return todos.filter(todo => !todo.active);
-        default:
-            throw new Error('invalid todo filter type');
-    }
-}
+import { getVisibleToDos } from '../redux/configureStore';
 
 const mapStateToProps = (state, ownProps) => ({
     todos: state,

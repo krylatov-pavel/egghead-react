@@ -11,3 +11,16 @@ export const todos = (state = [], action) => {
             return state;
     }
 };
+
+export const getVisibleToDos = (todos, filter) => {
+    switch (filter) {
+        case 'all':
+            return todos;
+        case 'active':
+            return todos.filter(todo => todo.active);
+        case 'completed':
+            return todos.filter(todo => !todo.active);
+        default:
+            throw new Error('invalid todo filter type');
+    }
+}
