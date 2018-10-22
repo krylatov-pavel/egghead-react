@@ -2,12 +2,16 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../redux/actionCreators';
 import { withRouter } from 'react-router-dom';
-import { getVisibleToDos } from '../redux/configureStore';
+import { getVisibleToDos, getIsFetching } from '../redux/configureStore';
 
-const mapStateToProps = (state, ownProps) => ({
-    todos: state,
-    filter: ownProps.match.params.filter || 'all'
-});
+const mapStateToProps = (state, ownProps) => {
+    const filter = ownProps.match.params.filter || 'all';
+    return {
+        todos: getVisibleToDos(state, filter),
+        filter,
+        isFetching: getIsFetching(state, filter)
+    }
+};
 
 class VisibleToDOList extends Component {
     componentDidMount() {
@@ -21,20 +25,28 @@ class VisibleToDOList extends Component {
     }
 
     fetchData() {
-        const {filter, fetchToDos} = this.props;
+        const {filter, fetchToDos, requestToDos} = this.props;
+
+        requestToDos(filter);
         fetchToDos(filter);
     }
 
     render() {
-        const visibleTodos = getVisibleToDos(this.props.todos, this.props.filter)
-            .map(todo => <li onClick={() => this.props.toggleToDo(todo.id)}
-                key={todo.id}
-                style={{
-                    textDecoration: todo.active ? 'none' : 'line-through'
-                }}
-            >{todo.text}</li>);
+        const {isFetching, todos, toggleToDo } = this.props;
 
-        return (<ul>{visibleTodos}</ul>);
+        if (isFetching && !todos.length) {
+            return (<p>Loading...</p>);
+        } else {
+            const visibleTodos = todos
+                .map(todo => <li onClick={() => toggleToDo(todo.id)}
+                    key={todo.id}
+                    style={{
+                        textDecoration: todo.active ? 'none' : 'line-through'
+                    }}
+                >{todo.text}</li>);
+
+            return (<ul>{visibleTodos}</ul>);
+        }
     }
 }
     

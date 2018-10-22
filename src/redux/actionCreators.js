@@ -18,6 +18,11 @@ export const fetchToDos = (filter) => {
     return api.fetchToDos(filter).then(todos => receiveToDos(filter, todos));
 }
 
+export const requestToDos = (filter) => ({
+    type: ActionTypes.REQUEST_TODOS,
+    filter
+});
+
 const receiveToDos = (filter, response) => ({
     type: ActionTypes.RECEIVE_TODOS,
     response,
