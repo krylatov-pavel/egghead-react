@@ -3,12 +3,27 @@ import { combineReducers } from 'redux';
 
 const createList = filter => {
     const ids = (state = [], action) => {
-        if (action.filter !== filter) {
-            return state;
-        }
+
         switch (action.type) {
             case ActionTypes.FETCH_TODOS_SUCCESS:
-                return action.response.map(todo => todo.id);
+                if (action.filter === filter) {
+                    return action.response.map(todo => todo.id);
+                }
+                return state;
+            case ActionTypes.ADD_TODO_SUCCESS:
+                if (filter !== 'completed') { //0
+                    return state.concat(action.response.id);
+                }
+                return state;
+            case ActionTypes.TOGGLE_TODO_SUCCESS:
+                if (filter === 'all')
+                    return state;
+                if (filter === 'active' && action.response.active || filter === 'completed' && !action.response.active) {
+                    return state.concat(action.response.id);
+                } else {
+                    return [...state.slice(0, state.indexOf(action.response.id)),
+                    ...state.slice(state.indexOf(action.response.id) + 1)];
+                }
             default:
                 return state;
         }
