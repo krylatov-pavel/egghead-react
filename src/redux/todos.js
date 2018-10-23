@@ -17,3 +17,4 @@ export const getVisibleToDos = (state, filter) => {
 }
 
 export const getIsFetching = (state, filter) => fromCreateList.getIsFetching(state.idsByFilter[filter]);
+export const getErrorMessage = (state, filter) => fromCreateList.getErrorMessage(state.idsByFilter[filter]);

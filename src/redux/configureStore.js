@@ -17,3 +17,4 @@ export default () => {
 
 export const getVisibleToDos = (state, filter) => fromTodos.getVisibleToDos(state.todos, filter);
 export const getIsFetching = (state, filter) => fromTodos.getIsFetching(state.todos, filter);
+export const getErrorMessage = (state, filter) => fromTodos.getErrorMessage(state.todos, filter);

@@ -20,18 +20,20 @@ export const fetchToDos = (filter) => (dispatch, getState) => {
         return Promise.resolve();
     }
 
-    dispatch(requestToDos(filter));
+    dispatch({
+        type: ActionTypes.FETCH_TODOS_REQUEST,
+        filter
+    });
 
-    return api.fetchToDos(filter).then(todos => dispatch(receiveToDos(filter, todos)));
-}
-
-const requestToDos = (filter) => ({
-    type: ActionTypes.REQUEST_TODOS,
-    filter
-});
-
-const receiveToDos = (filter, response) => ({
-    type: ActionTypes.RECEIVE_TODOS,
-    response,
-    filter
-});
+    return api.fetchToDos(filter).then(
+        response => dispatch({
+            type: ActionTypes.FETCH_TODOS_SUCCESS,
+            response,
+            filter
+        }),
+        error => dispatch({
+            type: ActionTypes.FETCH_TODOS_FAILURE,
+            message: error.message || 'something went wrong',
+            filter
+        }));
+};
