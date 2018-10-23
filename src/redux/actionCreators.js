@@ -14,11 +14,13 @@ export const toggleToDo = (id) => ({
     id
 });
 
-export const fetchToDos = (filter) => {
-    return api.fetchToDos(filter).then(todos => receiveToDos(filter, todos));
+export const fetchToDos = (filter) => (dispatch) => {
+    dispatch(requestToDos(filter));
+
+    return api.fetchToDos(filter).then(todos => dispatch(receiveToDos(filter, todos)));
 }
 
-export const requestToDos = (filter) => ({
+const requestToDos = (filter) => ({
     type: ActionTypes.REQUEST_TODOS,
     filter
 });
