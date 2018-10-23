@@ -1,11 +1,8 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import logger from 'redux-logger';
+import thunk from 'redux-thunk';
 import { todos } from './todos';
 import * as fromTodos from './todos';
-
-const thunk = (store) => (next) => (action) => typeof action === 'function'
-    ? action(store.dispatch)
-    : next(action);
 
 export default () => {
     const middlewares = [thunk, logger];

@@ -1,5 +1,6 @@
 import * as ActionTypes from './actionTypes';
 import * as api from '../api/todosApi';
+import * as Actions from './configureStore';
 
 let todosCount = 0;
 
@@ -14,7 +15,11 @@ export const toggleToDo = (id) => ({
     id
 });
 
-export const fetchToDos = (filter) => (dispatch) => {
+export const fetchToDos = (filter) => (dispatch, getState) => {
+    if (Actions.getIsFetching(getState(), filter)) {
+        return Promise.resolve();
+    }
+
     dispatch(requestToDos(filter));
 
     return api.fetchToDos(filter).then(todos => dispatch(receiveToDos(filter, todos)));
